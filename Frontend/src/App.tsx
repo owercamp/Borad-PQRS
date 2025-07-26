@@ -1,47 +1,23 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { useEffect, useState } from 'react'
+import DashboardGrid from './components/dashboard/DashboardGrid';
+import { DashboardProvider } from './context/DashboardContext';
+import Header from './components/layout/Header';
+import FilterPanel from './components/dashboard/controls/FilterPanel';
 
 function App() {
-
-  const [info, setInfo] = useState([]);
-
-  useEffect(() => {
-    google.script.run.withSuccessHandler((response: any) => {
-      let data = JSON.parse(response);
-      setInfo(data);
-    }).getSheetData();
-  }, []);
-
-  const dataBook = () => {
-    console.log(info);
-  }
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <DashboardProvider>
+      <div className="flex h-screen bg-gray-100">
+        <div className="flex-1 flex flex-col overflow-hidden">
+          <Header />
+
+          <main className="flex-1 overflow-y-auto p-6">
+            <FilterPanel />
+            <DashboardGrid />
+          </main>
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={dataBook}>
-          count is
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </DashboardProvider>
+  );
 }
 
-export default App
+export default App;
