@@ -10,7 +10,7 @@ export interface BaseWidgetConfig {
 
 export interface DashboardState {
   widgets: WidgetConfig[];
-  dateRange: [Date, Date];
+  dateRange: [];
   filters: Record<string, string>;
 }
 
