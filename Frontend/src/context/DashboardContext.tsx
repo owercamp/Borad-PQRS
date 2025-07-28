@@ -8,7 +8,7 @@ type Action =
 
 const initialState: DashboardState = {
   widgets: [],
-  dateRange: [new Date(), new Date()],
+  dateRange: [],
   filters: {},
 };
 
