@@ -15,22 +15,6 @@ const ChartWidget: React.FC<ChartWidgetProps> = ({ config }) => {
   const [chartType, setChartType] = useState<'bar' | 'line' | 'area'>('bar');
   let { data } = useFetchData(config.id);
 
-  // Datos de ejemplo (en producción usaríamos useFetchData hook)
-  data = [
-    { name: 'Ene', '2024': 4000, '2025': 4500 },
-    { name: 'Feb', '2024': 3000, '2025': 4500 },
-    { name: 'Mar', '2024': 2000, '2025': 4500 },
-    { name: 'Abr', '2024': 2780, '2025': 4500 },
-    { name: 'May', '2024': 1890, '2025': 4500 },
-    { name: 'Jun', '2024': 1890, '2025': 4500 },
-    { name: 'Jul', '2024': 1890, '2025': 4500 },
-    { name: 'Ago', '2024': 1890, '2025': 4500 },
-    { name: 'Sep', '2024': 1890, '2025': 4500 },
-    { name: 'Oct', '2024': 1890, '2025': 4500 },
-    { name: 'Nov', '2024': 1890, '2025': 4500 },
-    { name: 'Dic', '2024': 1890, '2025': 4500 },
-  ];
-
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-end mb-2">
