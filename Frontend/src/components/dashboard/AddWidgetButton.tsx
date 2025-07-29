@@ -145,12 +145,11 @@ const AddWidgetButton: React.FC = () => {
                           value={kpiConfig.format || 'number'}
                           onChange={(e) => setKpiConfig({
                             ...kpiConfig,
-                            format: e.target.value as 'number' | 'currency' | 'percent'
+                            format: e.target.value as 'number' | 'percent'
                           })}
                           className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                         >
                           <option value="number">Número</option>
-                          <option value="currency">Moneda</option>
                           <option value="percent">Porcentaje</option>
                         </select>
                       </div>
