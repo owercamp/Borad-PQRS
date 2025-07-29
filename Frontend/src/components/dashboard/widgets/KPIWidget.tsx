@@ -1,6 +1,6 @@
 import React from 'react';
-import useFetchData from '../../../hooks/useFetchData';
 import { WidgetConfig } from '../../../types/dashboardTypes';
+import useFetchDataKpi from '../../../hooks/useFetchDataKpi';
 
 // Tipos específicos para KPI
 interface KPIWidgetConfig extends WidgetConfig {
@@ -20,7 +20,7 @@ interface KPIWidgetProps {
 }
 
 const KPIWidget: React.FC<KPIWidgetProps> = ({ config }) => {
-  const { data, loading } = useFetchData(config.id);
+  let { data, loading } = useFetchDataKpi(config.id);
 
   // Obtener valor actual y anterior para calcular tendencia
   const currentValue = data?.currentValue || 0;
@@ -34,15 +34,9 @@ const KPIWidget: React.FC<KPIWidgetProps> = ({ config }) => {
   // Formatear valores según configuración
   const formatValue = (value: number) => {
     switch (config.format) {
-      case 'currency':
-        return new Intl.NumberFormat('es-ES', {
-          style: 'currency',
-          currency: config.currency || 'USD',
-          minimumFractionDigits: 0,
-          maximumFractionDigits: 2
-        }).format(value);
       case 'percent':
-        return `${value.toFixed(1)}%`;
+        const percentValue = ((currentValue - previousValue) / Math.abs(previousValue)) * 100;
+        return `${percentValue.toFixed(1)}%`;
       default:
         return new Intl.NumberFormat('es-ES').format(value);
     }
@@ -63,18 +57,6 @@ const KPIWidget: React.FC<KPIWidgetProps> = ({ config }) => {
 
   return (
     <div className="flex flex-col h-full p-4">
-      {/* Cabecera */}
-      <div className="flex justify-between items-start mb-3">
-        <div>
-          <h3 className="text-lg font-semibold text-gray-800">{config.title}</h3>
-        </div>
-
-        {config.icon && (
-          <div className="p-2 bg-blue-100 rounded-lg">
-            <span className="text-blue-600 text-xl">{config.icon}</span>
-          </div>
-        )}
-      </div>
 
       {/* Valor principal */}
       <div className="flex-grow flex items-center justify-center">
@@ -104,7 +86,7 @@ const KPIWidget: React.FC<KPIWidgetProps> = ({ config }) => {
       {config.showTarget && config.targetValue !== undefined && (
         <div className="mt-4">
           <div className="flex justify-between text-sm mb-1">
-            <span className="text-gray-600">Objetivo: {formatValue(config.targetValue)}</span>
+            <span className="text-gray-600">Objetivo: {config.targetValue}</span>
             <span className="font-medium">{calculateProgress().toFixed(0)}%</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
@@ -123,8 +105,8 @@ const KPIWidget: React.FC<KPIWidgetProps> = ({ config }) => {
 
       {/* Pie de página */}
       <div className="mt-3 pt-3 border-t border-gray-100">
-        <p className="text-xs text-gray-500 text-center">
-          Última actualización: {data?.lastUpdated || 'Hoy'}
+        <p className="text-xs text-gray-500 text-center -mt-7">
+          Última actualización: {new Intl.DateTimeFormat('es-ES', { month: "2-digit", day: "2-digit", year: "numeric" }).format(new Date()) || 'Hoy'}
         </p>
       </div>
     </div>
