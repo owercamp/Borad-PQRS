@@ -161,6 +161,27 @@ const AddWidgetButton: React.FC = () => {
                         </select>
                       </div>
 
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de visualización</label>
+                        <select
+                          value={selected || ''}
+                          onChange={(e) => {
+                            setSelected(e.target.value);
+                          }}
+                          className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        >
+                          <option value=''>Seleccione ...</option>
+                          <option value="fechaRadicacion">Fecha de Radicación</option>
+                          <option value="clientes">Clientes</option>
+                          <option value="sede">Sede</option>
+                          <option value="tipoNovedad">Tipo de Novedad</option>
+                          <option value="sedeResponsable">Sede Responsable</option>
+                          <option value="procesoResponsable">Proceso Responsable</option>
+                          <option value="tratamientoNovedad">Tratamiento de la Novedad</option>
+                          <option value="tiempoRespuesta">Tiempo de Respuesta</option>
+                        </select>
+                      </div>
+
                       <div className="flex items-center">
                         <input
                           type="checkbox"
