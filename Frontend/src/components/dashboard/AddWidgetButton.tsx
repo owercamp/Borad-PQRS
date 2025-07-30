@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useDashboard } from '../../context/DashboardContext';
 import { WidgetType, KPIWidgetConfig } from '../../types/dashboardTypes';
 import { v4 as uuidv4 } from 'uuid';
+import { NameServices } from '../../services/ChartNameServices';
 
 const AddWidgetButton: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -14,7 +15,7 @@ const AddWidgetButton: React.FC = () => {
     showTarget: false,
     targetValue: 0
   });
-  // const [typeChart, setTypeChart] = useState<string>('line');
+  const [selected, setSelected] = useState<string | null>(null);
 
   const { dispatch } = useDashboard();
 
@@ -25,7 +26,7 @@ const AddWidgetButton: React.FC = () => {
       id: `widget-${uuidv4()}`,
       type: 'kpi',
       dataKey: 'default', // Se puede personalizar
-      position: { x: 0, y: 0, w: 3, h: 3 }, // Tamaño predeterminado
+      position: { x: 0, y: Infinity, w: 3, h: 3 }, // Tamaño predeterminado
       ...kpiConfig,
     } as KPIWidgetConfig;
 
@@ -36,12 +37,27 @@ const AddWidgetButton: React.FC = () => {
   };
 
   const handlerCharts = () => {
+    if (!selected) {
+      dispatch({
+        type: 'ADD_WIDGET',
+        payload: {
+          id: `widget-${uuidv4()}`,
+          type: 'chart',
+          title: 'Fecha de Radicación',
+          dataKey: 'sales',
+          position: { x: 0, y: Infinity, w: 4, h: 3 }
+        }
+      });
+    };
+
+    const name = NameServices(selected);
+
     dispatch({
       type: 'ADD_WIDGET',
       payload: {
-        id: `widget-${Date.now()}`,
+        id: `widget-${uuidv4()}`,
         type: 'chart',
-        title: 'Nuevo Gráfico',
+        title: name || 'Gráfico',
         dataKey: 'sales',
         position: { x: 0, y: Infinity, w: 4, h: 3 }
       }
@@ -53,7 +69,7 @@ const AddWidgetButton: React.FC = () => {
       title: 'Nuevo KPI',
       format: 'number',
       showTrend: true,
-      showTarget: false,
+      showTarget: true,
       targetValue: 0
     });
   };
@@ -217,9 +233,20 @@ const AddWidgetButton: React.FC = () => {
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de visualización</label>
                         <select
+                          value={selected || 'fechaRadicacion'}
+                          onChange={(e) => {
+                            setSelected(e.target.value);
+                          }}
                           className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                         >
-                          <option value="chart">Gráfica</option>
+                          <option value="fechaRadicacion">Fecha de Radicación</option>
+                          <option value="clientes">Clientes</option>
+                          <option value="sede">Sede</option>
+                          <option value="tipoNovedad">Tipo de Novedad</option>
+                          <option value="sedeResponsable">Sede Responsable</option>
+                          <option value="procesoResponsable">Proceso Responsable</option>
+                          <option value="tratamientoNovedad">Tratamiento de la Novedad</option>
+                          <option value="tiempoRespuesta">Tiempo de Respuesta</option>
                         </select>
                       </div>
 
