@@ -19,13 +19,17 @@ const DashboardGrid: React.FC = () => {
   }, [dispatch, state.widgets]);
 
   const renderWidget = (widget: WidgetConfig) => {
-    switch (widget.type) {
-      case 'chart':
-        return <ChartWidget config={widget} />;
-      case 'kpi':
-        return <KPIWidget config={widget as KPIWidgetConfig} />;
-      default:
-        return null;
+    switch (widget.subtitle) {
+      case 'fechaRadicacion':
+        switch (widget.type) {
+          case 'chart':
+            return <ChartWidget config={widget} />;
+          case 'kpi':
+            return <KPIWidget config={widget as KPIWidgetConfig} />;
+          default:
+            return null;
+        }
+        break;
     }
   };
 
