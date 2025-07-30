@@ -128,3 +128,35 @@ function doGet() {
 
   return page;
 }
+
+function abrirInforme() {
+  var html: GoogleAppsScript.HTML.HtmlOutput = HtmlService.createHtmlOutput('<html>'
+    + '<script>' +
+    "var urlToOpen = 'https://script.google.com/macros/s/AKfycbxqBq7Xl5x_cnfSDH0IOLzJz2ENj5ZPgX6wkwzL1syFEePFLKdSz7uYhQLtx3mBEwos/exec';" +
+    "var winRef = window.open(urlToOpen);" +
+    "google.script.host.close();"
+    + '</script>'
+    + '</html>')
+    .setWidth(90).setHeight(1);
+  SpreadsheetApp.getUi().showModalDialog(html, "Abriendo Informe");
+}
+
+/**
+ * Executes when the spreadsheet is opened.
+ *
+ * @param {Object} e - The event object.
+ */
+function onOpen(e: any) {
+  try {
+    const menu: any = SpreadsheetApp.getUi().createMenu('ADMINISTRACIÓN PQRS');
+    const recipients: any = {
+      'Informes': 'abrirInforme',
+    };
+    for (const [name, recipient] of Object.entries(recipients)) {
+      menu.addItem(name, recipient);
+    }
+    menu.addToUi();
+  } catch (error: any) {
+    Logger.log(`${error.name}: ${error.message}`);
+  }
+}
