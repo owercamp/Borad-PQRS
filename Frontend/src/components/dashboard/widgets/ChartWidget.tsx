@@ -13,7 +13,7 @@ interface ChartWidgetProps {
 
 const ChartWidget: React.FC<ChartWidgetProps> = ({ config }) => {
   const [chartType, setChartType] = useState<'bar' | 'line' | 'area'>('bar');
-  let { data } = useFetchData(config.id);
+  let { dateSettlement } = useFetchData(config.id);
 
   return (
     <div className="h-full flex flex-col">
@@ -41,7 +41,7 @@ const ChartWidget: React.FC<ChartWidgetProps> = ({ config }) => {
       <div className="flex-grow">
         <ResponsiveContainer width="100%" height="100%">
           {chartType === 'bar' ? (
-            <BarChart data={data}>
+            <BarChart data={dateSettlement}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis />
@@ -51,7 +51,7 @@ const ChartWidget: React.FC<ChartWidgetProps> = ({ config }) => {
             </BarChart>
           ) : (
             chartType === 'line' ? (
-              <LineChart data={data}>
+              <LineChart data={dateSettlement}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
@@ -60,7 +60,7 @@ const ChartWidget: React.FC<ChartWidgetProps> = ({ config }) => {
                 <Line type="monotone" dataKey="2025" stroke="#82ca9d" />
               </LineChart>
             ) : (
-              <AreaChart data={data}>
+              <AreaChart data={dateSettlement}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
