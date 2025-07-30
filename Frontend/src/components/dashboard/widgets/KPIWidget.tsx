@@ -20,11 +20,11 @@ interface KPIWidgetProps {
 }
 
 const KPIWidget: React.FC<KPIWidgetProps> = ({ config }) => {
-  let { data, loading } = useFetchDataKpi(config.id);
+  let { dateSettlement, loading } = useFetchDataKpi(config.id);
 
   // Obtener valor actual y anterior para calcular tendencia
-  const currentValue = data?.currentValue || 0;
-  const previousValue = data?.previousValue || 0;
+  const currentValue = dateSettlement?.currentValue || 0;
+  const previousValue = dateSettlement?.previousValue || 0;
 
   // Calcular variación porcentual
   const variation = previousValue !== 0

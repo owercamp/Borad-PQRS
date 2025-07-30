@@ -27,4 +27,12 @@ const NameServices = (e: string | null) => {
   }
 }
 
-export { NameServices };
+const TypeOfConsultServices = (states: object | any, widgetId: string) => {
+  for (let index = 0; index < states.length; index++) {
+    if (states[index].id === widgetId) {
+      return states[index].subtitle;
+    }
+  }
+}
+
+export { NameServices, TypeOfConsultServices };

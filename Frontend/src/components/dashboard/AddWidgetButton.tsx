@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useDashboard } from '../../context/DashboardContext';
 import { WidgetType, KPIWidgetConfig } from '../../types/dashboardTypes';
 import { v4 as uuidv4 } from 'uuid';
-import { NameServices } from '../../services/ChartNameServices';
+import { NameServices } from '../../services/TypeOfConsultServices';
 
 const AddWidgetButton: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,6 +28,7 @@ const AddWidgetButton: React.FC = () => {
       dataKey: 'default', // Se puede personalizar
       position: { x: 0, y: Infinity, w: 3, h: 3 }, // Tamaño predeterminado
       ...kpiConfig,
+      subtitle: selected,
     } as KPIWidgetConfig;
 
     dispatch({ type: 'ADD_WIDGET', payload: newWidget });
@@ -37,18 +38,7 @@ const AddWidgetButton: React.FC = () => {
   };
 
   const handlerCharts = () => {
-    if (!selected) {
-      dispatch({
-        type: 'ADD_WIDGET',
-        payload: {
-          id: `widget-${uuidv4()}`,
-          type: 'chart',
-          title: 'Fecha de Radicación',
-          dataKey: 'sales',
-          position: { x: 0, y: Infinity, w: 4, h: 3 }
-        }
-      });
-    };
+    if (selected === null || selected === '') return;
 
     const name = NameServices(selected);
 
@@ -59,8 +49,9 @@ const AddWidgetButton: React.FC = () => {
         type: 'chart',
         title: name || 'Gráfico',
         dataKey: 'sales',
-        position: { x: 0, y: Infinity, w: 4, h: 3 }
-      }
+        position: { x: 0, y: Infinity, w: 4, h: 3 },
+        subtitle: selected
+      },
     });
   }
 
@@ -233,12 +224,13 @@ const AddWidgetButton: React.FC = () => {
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-1">Tipo de visualización</label>
                         <select
-                          value={selected || 'fechaRadicacion'}
+                          value={selected || ''}
                           onChange={(e) => {
                             setSelected(e.target.value);
                           }}
                           className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                         >
+                          <option value=''>Seleccione ...</option>
                           <option value="fechaRadicacion">Fecha de Radicación</option>
                           <option value="clientes">Clientes</option>
                           <option value="sede">Sede</option>
@@ -255,6 +247,7 @@ const AddWidgetButton: React.FC = () => {
                           onClick={() => {
                             handlerCharts();
                             setIsModalOpen(false);
+                            setSelectedWidgetType(null);
                           }}
                           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg shadow"
                         >
